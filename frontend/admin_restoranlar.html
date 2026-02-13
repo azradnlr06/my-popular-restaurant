@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Restoran Yönetimi</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #adcaeb;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+            font-size: 17px;
+        }
+
+        .btn {
+            padding: 7px 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .edit-btn {
+            background: orange;
+        }
+
+        .delete-btn {
+            background: red;
+        }
+
+       
+        .popup-bg {
+            display: none;
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: white;
+            padding: 20px;
+            width: 350px;
+            border-radius: 10px;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .close-btn {
+            margin-top: 10px;
+            background: gray !important;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Restoran Yönetimi</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Restoran Adı</th>
+            <th>Adres</th>
+            <th>Kategori ID</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+
+    <tbody id="restoranBody">
+        {% for r in restoranlar %}
+        <tr>
+            <td>{{ r.restoran_id }}</td>
+            <td>{{ r.restoran_ad }}</td>
+            <td>{{ r.adres }}</td>
+            <td>{{ r.kategori_id }}</td>
+
+            <td>
+                <button class="btn edit-btn" onclick="duzenle('{{ r.restoran_id }}','{{ r.restoran_ad }}','{{ r.adres }}')">Düzenle</button>
+                <button class="btn delete-btn" onclick="sil('{{ r.restoran_id }}')">Sil</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Düzenleme Popup -->
+<div class="popup-bg" id="popupBg">
+    <div class="popup">
+        <h3>Restoran Düzenle</h3>
+
+        <input type="hidden" id="duzenleID">
+
+        <label>Restoran Adı:</label>
+        <input type="text" id="duzenleAd">
+
+        <label>Adres:</label>
+        <input type="text" id="duzenleAdres">
+
+        <button onclick="kaydet()">Kaydet</button>
+        <button class="close-btn" onclick="kapat()">Kapat</button>
+    </div>
+</div>
+
+
+<script>
+    // Düzenleme popup açma
+    function duzenle(id, ad, adres) {
+        document.getElementById("duzenleID").value = id;
+        document.getElementById("duzenleAd").value = ad;
+        document.getElementById("duzenleAdres").value = adres;
+
+        document.getElementById("popupBg").style.display = "flex";
+    }
+
+    function kapat() {
+        document.getElementById("popupBg").style.display = "none";
+    }
+
+    // Kaydet → REST API
+    function kaydet() {
+        const restoran_id = document.getElementById("duzenleID").value;
+        const restoran_ad = document.getElementById("duzenleAd").value;
+        const adres = document.getElementById("duzenleAdres").value;
+
+        fetch("http://127.0.0.1:5000/admin/restoran-guncelle", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ restoran_id, restoran_ad, adres })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.mesaj);
+            window.location.reload();
+        });
+    }
+
+    // Silme → REST API
+    function sil(restoran_id) {
+        if (!confirm("Bu restoranı silmek istediğine emin misin?")) return;
+
+        fetch("http://127.0.0.1:5000/admin/restoran-sil", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ restoran_id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.mesaj);
+            window.location.reload();
+        });
+    }
+</script>
+
+</body>
+</html>
