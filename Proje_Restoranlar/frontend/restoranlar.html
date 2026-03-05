@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Popüler Restoranlar</title>
+</head>
+    <style>
+        body {
+    background-color: rgb(211, 233, 233);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+h1 {
+    color: #4b4b4b;
+    margin-bottom: 20px;
+}
+
+.restaurant-card {
+    background: #e5e3e3;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.restaurant-card:hover {
+    transform: scale(1.02);
+}
+
+.restaurant-source {
+    font-size: 12px;
+    color: #666;
+}
+
+.average-rating {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.rating-buttons {
+    margin-top: 10px;
+}
+
+.rating-buttons button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background: #c2f09a;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.rating-buttons button:hover {
+    background: #c2f09a;
+}
+
+/* Puan ver butonu */
+.show-rating-btn {
+    margin-top: 10px;
+    padding: 7px 12px;
+    cursor: pointer;
+    border: none;
+    background-color: #73afef;
+    color: white;
+    border-radius: 5px;
+}
+
+.show-rating-btn:hover {
+    background-color: #73afef;
+}
+
+    </style>
+<body>
+
+    <h1>Güncel Popüler Restoranlar</h1>
+
+    <form id="searchForm">
+        <input type="text" id="sehir" placeholder="Şehir" required>
+        <input type="text" id="kategori" placeholder="Kategori" required>
+        <button type="submit">Ara</button>
+    </form>
+
+
+    <div id="restaurantList">
+        <p>Yükleniyor...</p>
+    </div>
+
+    <script src="/js/restoranlar.js"></script>
+
+</body>
+</html>

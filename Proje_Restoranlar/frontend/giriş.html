@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Popüler Restoranlar</title>
+</head>
+    <style>
+        body {
+    background-color:rgb(211, 233, 233);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    margin: 0;
+}
+
+h1{
+    color : #4b4b4b;
+    margin-bottom: 15px;
+}
+
+h2{
+    color: #7e72c9;
+    margin-bottom: 20px;
+}
+
+.admin-form {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+}
+
+.admin-login-btn {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    background-color: #d3e1ef;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s ease;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+}
+
+.admin-login-btn:hover {
+    background-color:  #d3e1ef;
+    transform: scale(1.05);
+}
+    </style>
+<body>
+
+    <h1>Popüler Restoranlara Hoş Geldiniz</h1>
+    <h2>Restoran Bul</h2>
+
+    <form action="/admin-login" method="GET" class="admin-form">
+        <button id="loginBtn" type="submit">Admin Giriş</button>
+    </form>
+
+    <form id="searchForm">
+        <input type="text" id="sehir" name="sehir" placeholder="Şehir" required>
+        <input type="text" id="kategori" name="kategori" placeholder="Kategori" required>
+        <button id="girisBtn" type="submit">Ara</button>
+    </form>
+
+    <!-- JS KODU HTML'İN İÇİNDE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const searchForm = document.getElementById("searchForm");
+
+            searchForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const sehir = document.getElementById("sehir").value.trim();
+                const kategori = document.getElementById("kategori").value.trim();
+
+                if (sehir && kategori) {
+                    window.location.href = 
+                        `/restoranlar?sehir=${encodeURIComponent(sehir)}&kategori=${encodeURIComponent(kategori)}`;
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
